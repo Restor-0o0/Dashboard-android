@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Dashboard</string>
+    <string name="View">Отображение</string>
+    <string name="group_by">Группировка</string>
+    <string name="Count">Количество</string>
+    <string name="Priority">Приоритет</string>
+    <string name="presentation">Представление</string>
+    <string name="Unauthorized">Ошибка авторизации</string>
+    <string name="ServerError">Ошибка сервера</string>
+    <string name="Exit">Выход</string>
+</resources>
