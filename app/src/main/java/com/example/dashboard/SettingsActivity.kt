@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.window.SplashScreen
+import android.window.SplashScreenView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
@@ -27,6 +29,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -46,6 +49,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
@@ -480,6 +484,7 @@ fun SettingsItem(
 ) {
     var expanded by remember { mutableStateOf(false) }
     var expanded1 by remember { mutableStateOf(false) }
+    var expanded2 by remember { mutableStateOf(settItem.Active) }
     val DrawMap = drawsList.associateBy( { it.ID.toString() },{it.Name}) + drawsList.associateBy( { it.Name },{it.ID.toString()})
     val TypeMap = typesList.associateBy( { it.ID.toString() },{it.Name}) + typesList.associateBy( { it.Name },{it.ID.toString()})
 
@@ -580,7 +585,8 @@ fun SettingsItem(
                         label = {
                             Text(
                                 text = stringResource(R.string.group_by),
-                                color = Color(MaterialTheme.colorScheme.surface.toArgb())
+                                color = Color(MaterialTheme.colorScheme.surface.toArgb()),
+                                fontSize = 15.sp
                             )
                         },
                         modifier = Modifier
@@ -624,7 +630,8 @@ fun SettingsItem(
                     label = {
                         Text(
                             text = stringResource(R.string.Count),
-                            color = Color(MaterialTheme.colorScheme.surface.toArgb())
+                            color = Color(MaterialTheme.colorScheme.surface.toArgb()),
+                            fontSize = 15.sp
                         )
                     }
                 )
@@ -643,7 +650,8 @@ fun SettingsItem(
                     label = {
                         Text(
                             text = stringResource(R.string.Priority),
-                            color = Color(MaterialTheme.colorScheme.surface.toArgb())
+                            color = Color(MaterialTheme.colorScheme.surface.toArgb()),
+                            fontSize = 15.sp
                         )
                     }
                 )
@@ -670,7 +678,8 @@ fun SettingsItem(
                         label = {
                             Text(
                                 text = stringResource(R.string.presentation),
-                                color = Color(MaterialTheme.colorScheme.surface.toArgb())
+                                color = Color(MaterialTheme.colorScheme.surface.toArgb()),
+                                fontSize = 15.sp
                             )
                         },
                         modifier = Modifier
@@ -699,7 +708,31 @@ fun SettingsItem(
                             )
                         }
                     }
+
                 }
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Активно",
+                        fontSize = 15.sp,
+                        modifier = Modifier
+                            //.padding(start = 20.dp)
+                    )
+                    Checkbox(
+                        checked = expanded2,
+                        onCheckedChange = {
+                            settItem.Active = it
+                            expanded2 = it              },
+                        modifier = Modifier
+                            .scale(2.5f)
+                            .padding( bottom = 10.dp,top = 5.dp)
+                    )
+                }
+                
 
             }
 

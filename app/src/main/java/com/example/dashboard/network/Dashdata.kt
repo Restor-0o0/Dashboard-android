@@ -60,6 +60,7 @@ data class SettingsData(
     var TypeCount: Int,
     var DrawingType: Int,
     val Name: String,
+    var Active: Boolean
 )
 
 data class SettingsSendData(

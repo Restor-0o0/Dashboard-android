@@ -42,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.dashboard.network.AuthMan
 import com.example.dashboard.network.RetrofitInstance
 import com.example.dashboard.network.SaveManager
@@ -66,6 +67,7 @@ class LoginActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         setContent {
             var Theme = remember{ mutableStateOf(true) }
             if(SaveManager.get(this@LoginActivity,"theme")!= null)
