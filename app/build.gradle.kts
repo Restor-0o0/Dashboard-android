@@ -98,6 +98,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     //implementation("com.android.tools.compose:compose-preview-renderer:<latest_version>")
     implementation("androidx.compose.material3:material3:1.2.1")
+    implementation("androidx.activity:activity-ktx:1.9.0")
     //implementation("com.android.tools.compose:compose-preview-renderer:0.0.1-alpha01")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
