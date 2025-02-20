@@ -1,4 +1,4 @@
-package com.example.dashboard
+package com.example.dashboard.presenter.View
 
 //import com.patrykandpatrick.vico.compose.chart.Chart
 import android.content.Context
@@ -45,11 +45,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.dashboard.network.Graphdata
-import com.example.dashboard.network.Numbdata
-import com.example.dashboard.network.RetrofitInstance
-import com.example.dashboard.network.SaveManager
-import com.example.dashboard.ui.theme.DashboardTheme
+import com.example.dashboard.R
+import com.example.dashboard.domain.model.Graphdata
+import com.example.dashboard.domain.model.Numbdata
+import com.example.dashboard.data.api.RetrofitInstance
+import com.example.dashboard.common.SaveManager
+import com.example.dashboard.presenter.theme.DashboardTheme
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLabelComponent
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLineComponent
@@ -70,7 +71,6 @@ import com.patrykandpatrick.vico.core.common.component.ShapeComponent
 import com.patrykandpatrick.vico.core.common.component.TextComponent
 import com.patrykandpatrick.vico.core.common.shader.DynamicShader
 import com.patrykandpatrick.vico.core.common.shape.Shape
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -83,22 +83,20 @@ class MainActivity : ComponentActivity() {
         open fun toSettings() {}
         open fun toLogin() {}
     }
-    private val settingsCallback = object : SettingsCallback() {
+    /*private val settingsCallback = object : SettingsCallback() {
         override fun toSettings() {
             val intent = Intent(this@MainActivity, SettingsActivity::class.java)
             startActivity(intent)
-            finish()
         }
         override fun toLogin() {
             SaveManager.clear(this@MainActivity,"token")
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
-            finish()
         }
-    }
+    }*/
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            setContent {
+            /*setContent {
                 var Theme = remember{ mutableStateOf(true) }
                 if(SaveManager.get(this@MainActivity,"theme")!= null)
                 {
@@ -137,12 +135,12 @@ class MainActivity : ComponentActivity() {
 
                     }
                 }
-            }
+            }*/
         }
 }
 
 
-
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ViewData(
@@ -151,16 +149,20 @@ fun ViewData(
     ) {
 
 
-    var NumberData by remember{ mutableStateOf(Numbdata(num_numbs = 0,
+    var NumberData by remember{ mutableStateOf(
+        Numbdata(num_numbs = 0,
         numbs = arrayOf(),
         metrics = arrayOf(),
-        head_numb = arrayOf()))
+        head_numb = arrayOf())
+    )
     }
-    var GraphicData by remember{ mutableStateOf(Graphdata(
+    var GraphicData by remember{ mutableStateOf(
+        Graphdata(
         num_graphs = 0,
         graph = arrayOf(arrayOf()),
         labels = arrayOf(arrayOf()),
-        head = arrayOf()))
+        head = arrayOf())
+    )
     }
     var Login by remember{ mutableStateOf("name") }
     var isLoading by remember{ mutableStateOf(true) }
@@ -644,3 +646,4 @@ fun GreetingPreview() {
         }
     }
 }
+*/

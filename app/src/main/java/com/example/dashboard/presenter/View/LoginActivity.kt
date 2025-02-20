@@ -1,8 +1,9 @@
-package com.example.dashboard
+package com.example.dashboard.presenter.View
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -38,19 +38,15 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.dashboard.network.AuthMan
-import com.example.dashboard.network.RetrofitInstance
-import com.example.dashboard.network.SaveManager
-import com.example.dashboard.network.User
-import com.example.dashboard.ui.theme.DashboardTheme
+import com.example.dashboard.R
+import com.example.dashboard.data.api.RetrofitInstance
+import com.example.dashboard.common.SaveManager
+import com.example.dashboard.presenter.theme.DashboardTheme
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.security.AccessController.getContext
 
 
 class LoginActivity : ComponentActivity() {
@@ -59,15 +55,15 @@ class LoginActivity : ComponentActivity() {
     }
     private val loginCallback = object : LoginCallback() {
         override fun onLoginSuccess(token: String) {
-            SaveManager.save(this@LoginActivity,"token", token)
+            Log.e("DEBUGAAAA","Perehodim")
+            //SaveManager.save(this@LoginActivity,"token", token)
             val intent = Intent(this@LoginActivity, MainActivity::class.java)
             startActivity(intent)
-            finish()
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
+        /*installSplashScreen()
         setContent {
             var Theme = remember{ mutableStateOf(true) }
             if(SaveManager.get(this@LoginActivity,"theme")!= null)
@@ -100,14 +96,14 @@ class LoginActivity : ComponentActivity() {
                     )
                 }
             }
-        }
+        }*/
     }
 
 }
 
 
 
-
+/*
 @Composable
 fun LoginScreen(
     cont: Context,
@@ -129,13 +125,17 @@ fun LoginScreen(
         isLoading = true
         scope.launch {
             try {
+                Log.e("DEBUGAAAA","Poprosili")
                 val user = RetrofitInstance.authService.login(username, password)
+                Log.e("DEBUGAAAA","Poluchili")
                 token = user.auth_token
                 if(user.auth_token != ""){
+
                     SaveManager.save(context = cont,key="HttpError", value = "")
                     logcallback.onLoginSuccess(
                         token = user.auth_token
                     )
+                    Log.e("DEBUGAAAA","sohranili")
                 }
             } catch (e: HttpException) {
                 if(e.code() == 401)
@@ -276,7 +276,7 @@ fun LoginScreen(
             )
         }
     }
-}
+}*/
 
 /*
 @Preview(

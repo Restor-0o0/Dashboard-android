@@ -1,4 +1,4 @@
-package com.example.dashboard
+package com.example.dashboard.presenter.View
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -6,8 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.window.SplashScreen
-import android.window.SplashScreenView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
@@ -57,14 +55,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.dashboard.network.AuthMan
-import com.example.dashboard.network.DrawingTypes
-import com.example.dashboard.network.RetrofitInstance
-import com.example.dashboard.network.SaveManager
-import com.example.dashboard.network.SettingsData
-import com.example.dashboard.network.SettingsSendData
-import com.example.dashboard.network.TypesCount
-import com.example.dashboard.ui.theme.DashboardTheme
+import com.example.dashboard.R
+import com.example.dashboard.domain.UseCase.AuthMan
+import com.example.dashboard.domain.model.DrawingTypes
+import com.example.dashboard.data.api.RetrofitInstance
+import com.example.dashboard.common.SaveManager
+import com.example.dashboard.domain.model.SettingsData
+import com.example.dashboard.domain.model.TypesCount
+import com.example.dashboard.presenter.theme.DashboardTheme
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
@@ -74,27 +72,24 @@ class SettingsActivity : ComponentActivity() {
         open fun onSettingsBack() {}
         open fun toLogin() {}
     }
-    private val settingsCallback = object : SettingsCallback() {
+    /*private val settingsCallback = object : SettingsCallback() {
         override fun onSettingsSave() {
 
             val intent = Intent(this@SettingsActivity, MainActivity::class.java)
             startActivity(intent)
-            finish()
         }
         override fun onSettingsBack() {
             val intent = Intent(this@SettingsActivity, MainActivity::class.java)
             startActivity(intent)
-            finish()
         }
         override fun toLogin() {
             val intent = Intent(this@SettingsActivity, LoginActivity::class.java)
             startActivity(intent)
-            finish()
         }
-    }
+    }*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent{
+        /*setContent{
             var Theme = remember{ mutableStateOf(true) }
             if(SaveManager.get(this@SettingsActivity,"theme")!= null)
             {
@@ -133,12 +128,12 @@ class SettingsActivity : ComponentActivity() {
                 }
             }
 
-        }
+        }*/
     }
 }
 
 
-
+/*
 @Composable
 fun MenuBar(
     cont: Context,
@@ -739,6 +734,6 @@ fun SettingsItem(
         }
     }
     }
-
+*/
 
 

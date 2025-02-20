@@ -1,4 +1,4 @@
-package com.example.dashboard.ui.theme
+package com.example.dashboard.presenter.theme
 
 import androidx.compose.ui.graphics.Color
 

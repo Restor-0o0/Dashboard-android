@@ -1,4 +1,4 @@
-package com.example.dashboard.network
+package com.example.dashboard.data.model
 
 data class Auth(
     val username: String,

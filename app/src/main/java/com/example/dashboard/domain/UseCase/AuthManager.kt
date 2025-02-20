@@ -1,7 +1,5 @@
-package com.example.dashboard.network
+package com.example.dashboard.domain.UseCase
 import android.content.Context
-import android.provider.Settings.Global.putString
-import android.system.Os.remove
 
 object AuthMan {
     private const val PREFS_NAME = "auth_prefs"
