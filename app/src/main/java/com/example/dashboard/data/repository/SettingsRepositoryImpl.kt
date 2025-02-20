@@ -1,18 +1,17 @@
-package com.example.dashboard.data.reposetory
+package com.example.dashboard.data.repository
 
 import com.example.dashboard.data.datasource.SettingsService
 import com.example.dashboard.data.model.ResponseWrapper
 import com.example.dashboard.data.model.SettingsResponse
-import com.example.dashboard.domain.api.SettingsReposetory
+import com.example.dashboard.domain.api.SettingsRepository
 import com.example.dashboard.domain.model.DrawingTypes
 import com.example.dashboard.domain.model.SettingsData
 import com.example.dashboard.domain.model.TypesCount
-import retrofit2.Response
 import javax.inject.Inject
 
-class SettingsReposetoryImpl @Inject constructor(
+class SettingsRepositoryImpl @Inject constructor(
     private val api: SettingsService
-): SettingsReposetory{
+): SettingsRepository{
     override suspend fun getTypesCount(token: String): ResponseWrapper<List<TypesCount>> {
         return try{
             val response = api.getTypesCount(

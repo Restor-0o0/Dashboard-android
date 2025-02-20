@@ -63,7 +63,7 @@ class LoginActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*installSplashScreen()
+        installSplashScreen()
         setContent {
             var Theme = remember{ mutableStateOf(true) }
             if(SaveManager.get(this@LoginActivity,"theme")!= null)
@@ -96,14 +96,14 @@ class LoginActivity : ComponentActivity() {
                     )
                 }
             }
-        }*/
+        }
     }
 
 }
 
 
 
-/*
+
 @Composable
 fun LoginScreen(
     cont: Context,
@@ -276,7 +276,7 @@ fun LoginScreen(
             )
         }
     }
-}*/
+}
 
 /*
 @Preview(

@@ -5,7 +5,7 @@ import com.example.dashboard.domain.model.SettingsData
 import com.example.dashboard.domain.model.TypesCount
 
 data class SettingsResponse(
-    val settings_data: Array<DrawingTypes>,
-    val drawing_types: Array<TypesCount>,
-    val types_count: Array<SettingsData>
+    val settings_data: Array<SettingsData>,
+    val drawing_types: Array<DrawingTypes>,
+    val types_count: Array<TypesCount>
 )

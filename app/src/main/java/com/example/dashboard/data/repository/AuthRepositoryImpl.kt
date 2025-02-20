@@ -1,14 +1,14 @@
-package com.example.dashboard.data.reposetory
+package com.example.dashboard.data.repository
 
 import com.example.dashboard.data.datasource.AuthService
 import com.example.dashboard.data.model.ResponseWrapper
 import com.example.dashboard.data.model.User
-import com.example.dashboard.domain.api.AuthReposetory
+import com.example.dashboard.domain.api.AuthRepository
 import javax.inject.Inject
 
-class AuthReposetoryImpl @Inject constructor(
+class AuthRepositoryImpl @Inject constructor(
     private val api: AuthService
-): AuthReposetory {
+): AuthRepository {
     override suspend fun login(username: String, password: String): ResponseWrapper<User> {
         return try{
             val response = api.login(

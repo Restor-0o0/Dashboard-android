@@ -1,19 +1,23 @@
 package com.example.dashboard.DI
 
+import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module(includes = [
     NetworkModule::class,
     ApiModule::class,
-    AuthReposetoryModule::class,
-    DashDataReposetoryModule::class,
-    SettingsReposetoryModule::class
+    AuthRepositoryModule::class,
+    DashDataRepositoryModule::class,
+    SettingsRepositoryModule::class,
+    SaveManagerModule::class
 ])
-class AppModule (private val context: Context) {
+class AppModule {
     @Provides
-    fun provideContext(): Context{
-        return context
+    @Singleton
+    fun provideContext(application: Application): Context{
+        return application.applicationContext
     }
 }
