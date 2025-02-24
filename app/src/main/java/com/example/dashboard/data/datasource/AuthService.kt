@@ -14,5 +14,5 @@ interface AuthService { //Интерфейс для авторизации
     suspend fun login(
         @Field("username") username: String,
         @Field("password") password: String
-    ): Response<User>
+    ): User
 }

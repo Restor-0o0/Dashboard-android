@@ -19,6 +19,6 @@ interface DashDataService{ //Интерфейс для обмена данным
     @GET(DATA_LIST)
     suspend fun getData( //Получение данных
         @Header("Authorization") token: String?
-    ): Response<Dashdata>
+    ): Dashdata
 
 }

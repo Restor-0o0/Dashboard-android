@@ -17,13 +17,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".presenter.View.SettingsActivity"
+            android:name=".presenter.View.settings.SettingsActivity"
             android:exported="true"
             android:theme="@style/Theme.Dashboard">
 
         </activity>
         <activity
-            android:name=".presenter.View.LoginActivity"
+            android:name=".presenter.View.login.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Dashboard">
             <intent-filter>
@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presenter.View.MainActivity"
+            android:name=".presenter.View.dashboard.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Dashboard">
 

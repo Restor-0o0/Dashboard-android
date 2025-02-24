@@ -24,7 +24,7 @@ interface ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SettingsViewModel::class) // Связываем ViewModel с ключом
+    @ViewModelKey(SettingsViewModel::class)
     fun bindSettingsViewModel(viewModel: SettingsViewModel): ViewModel
 }
 

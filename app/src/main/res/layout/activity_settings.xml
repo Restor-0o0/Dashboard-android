@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presenter.View.SettingsActivity">
+    tools:context=".presenter.View.settings.SettingsActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

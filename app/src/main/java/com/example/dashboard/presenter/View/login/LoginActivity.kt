@@ -1,9 +1,6 @@
-package com.example.dashboard.presenter.View
+package com.example.dashboard.presenter.View.login
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -24,163 +21,83 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.dashboard.R
-import com.example.dashboard.data.api.RetrofitInstance
-import com.example.dashboard.common.SaveManager
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.dashboard.presenter.theme.DashboardTheme
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
+import com.example.dashboard.presenter.vm.AuthViewModel
 
 
 class LoginActivity : ComponentActivity() {
-    open class LoginCallback {
-        open fun onLoginSuccess(token: String) {}
-    }
-    private val loginCallback = object : LoginCallback() {
-        override fun onLoginSuccess(token: String) {
-            Log.e("DEBUGAAAA","Perehodim")
-            //SaveManager.save(this@LoginActivity,"token", token)
-            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-            startActivity(intent)
-        }
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         setContent {
-            var Theme = remember{ mutableStateOf(true) }
-            if(SaveManager.get(this@LoginActivity,"theme")!= null)
-            {
-                Theme.value = SaveManager.get(this@LoginActivity,"theme").toBoolean()
-            }
-            else{
-                SaveManager.save(this@LoginActivity,"theme",Theme.toString())
-            }
-            DashboardTheme(
-                darkTheme = Theme.value,
-                dynamicColor = false
-            ) {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    //SaveManager.clear(this,"token")
-                    if(SaveManager.get(this,"token") != null)
-                    {
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        startActivity(intent)
-                    }
-
-                    LoginScreen(
-                        logcallback = loginCallback,
-                        cont = this,
-                        theme = Theme
-                    )
-                }
-            }
+            Screen()
         }
     }
-
 }
 
 
+@Composable
+fun Screen(){
+    val viewModel: AuthViewModel = hiltViewModel()
+    val isDark = viewModel.isDarkTheme.collectAsState()
+    DashboardTheme(
+        darkTheme = isDark.value    ,
+        dynamicColor = false
+    ) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            LoginScreen()
+        }
+    }
+}
 
 
 @Composable
-fun LoginScreen(
-    cont: Context,
-    logcallback: LoginActivity.LoginCallback,
-    theme: MutableState<Boolean>,
-){
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var isLoading by remember { mutableStateOf(false) }
-    var token by remember { mutableStateOf("") }
-    var simb by remember { mutableStateOf("") }
-    var httpError by remember{mutableStateOf("")}
-    if(SaveManager.get(context = cont,key="HttpError") != null){
-        httpError = SaveManager.get(context = cont,key="HttpError").toString()
-    }
+fun LoginScreen(){
+    val viewModel: AuthViewModel = hiltViewModel()
+    val username by viewModel.username.collectAsState()
+    val password by viewModel.password.collectAsState()
     val focusManager = LocalFocusManager.current
-    val scope = rememberCoroutineScope()
-    fun performLogin() {
-        isLoading = true
-        scope.launch {
-            try {
-                Log.e("DEBUGAAAA","Poprosili")
-                val user = RetrofitInstance.authService.login(username, password)
-                Log.e("DEBUGAAAA","Poluchili")
-                token = user.auth_token
-                if(user.auth_token != ""){
-
-                    SaveManager.save(context = cont,key="HttpError", value = "")
-                    logcallback.onLoginSuccess(
-                        token = user.auth_token
-                    )
-                    Log.e("DEBUGAAAA","sohranili")
-                }
-            } catch (e: HttpException) {
-                if(e.code() == 401)
-                {
-                    httpError= cont.getString(R.string.Unauthorized)
-                }
-                else if(e.code()% 500 == 1){
-                    httpError = cont.getString(R.string.ServerError)
-                }
-            } finally {
-                isLoading = false
-            }
-
-
-        }
-    }
-
-
-    if(theme.value == true)
-    {
-        simb = "☾"
+    var simb = if(viewModel.isDarkTheme.collectAsState().value){
+        "☾"
     }
     else{
-        simb = "☀"
+        "☀"
     }
     Column {
-
-
         Row(
             horizontalArrangement = Arrangement.End,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp)
         ) {
-            Button(onClick = {
-                theme.value = theme.value.not()
-                SaveManager.save(cont, "theme", theme.value.toString())
-                             },
-
+            Button(
+                onClick = {
+                    viewModel.toggleTheme()
+                          },
                 modifier = Modifier
                     .width(70.dp)
                     .height(70.dp)
 
             ) {
-
                 Text(
                     text = simb,
                     color = Color(MaterialTheme.colorScheme.surface.toArgb()),
@@ -203,7 +120,7 @@ fun LoginScreen(
             )
             OutlinedTextField(
                 value = username,
-                onValueChange = { username = it },
+                onValueChange = { viewModel.setUsername(it) },
                 label = {
                     Text(
                         text = "Username",
@@ -228,7 +145,7 @@ fun LoginScreen(
             )
             OutlinedTextField(
                 value = password,
-                onValueChange = { password = it },
+                onValueChange = { viewModel.setPassword(it) },
                 label = {
                     Text(
                         text = "Пароль",
@@ -240,7 +157,7 @@ fun LoginScreen(
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
-                    onDone = { performLogin() }
+                    onDone = { viewModel.performLogin() }
                 ),
                 visualTransformation = PasswordVisualTransformation(),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -253,7 +170,7 @@ fun LoginScreen(
                     .padding(bottom = 16.dp)
             )
             Button(
-                onClick = { performLogin() },
+                onClick = { viewModel.performLogin() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
@@ -275,6 +192,7 @@ fun LoginScreen(
                     .padding(start=5.dp,end=5.dp)
             )
         }
+
     }
 }
 

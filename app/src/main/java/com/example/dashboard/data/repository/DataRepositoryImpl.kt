@@ -10,17 +10,9 @@ class DataRepositoryImpl @Inject constructor(
     private val api: DashDataService
 ) : DataRepository {
     override suspend fun getData(token: String): ResponseWrapper<Dashdata> {
-        return try{
-            val response = api.getData(
+        return safeApiCall {api.getData(
                 token
             )
-            if(response.isSuccessful){
-                return ResponseWrapper.Success(response.body()!!)
-            }else{
-                return ResponseWrapper.Error(response.message())
-            }
-        }catch (e: Exception){
-            return  ResponseWrapper.Error(e.message.toString())
         }
     }
 

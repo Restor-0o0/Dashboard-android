@@ -74,6 +74,11 @@ dependencies {
     implementation("com.google.dagger:dagger:2.55")
     kapt("com.google.dagger:dagger-compiler:2.55")
 
+    //Hilt для ViewModel
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("com.google.dagger:hilt-android:2.54")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
+
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -86,12 +91,20 @@ dependencies {
     // AndroidX Core & Lifecycle
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0")
+
+    //Secure
+    implementation("androidx.security:security-crypto:1.0.0")
+
+    //Data Store
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Navigation
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
     // AndroidX UI Components
     implementation("androidx.appcompat:appcompat:1.6.1")
