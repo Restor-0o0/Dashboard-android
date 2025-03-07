@@ -5,6 +5,7 @@ import com.example.dashboard.data.repository.DataRepositoryImpl
 import dagger.Module
 import dagger.Provides
 
+
 @Module
 class DashDataRepositoryModule {
     @Provides

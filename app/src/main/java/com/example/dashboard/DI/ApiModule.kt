@@ -5,8 +5,10 @@ import com.example.dashboard.data.datasource.DashDataService
 import com.example.dashboard.data.datasource.SettingsService
 import dagger.Module
 import dagger.Provides
+
 import retrofit2.Retrofit
 import javax.inject.Singleton
+
 
 @Module
 class ApiModule {

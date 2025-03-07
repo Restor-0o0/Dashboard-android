@@ -1,7 +1,7 @@
 package com.example.dashboard.domain.model
 
 
-data class Dashdata( //Для получения данных отрисовки с сервера
+data class ResponseDashData( //Для получения данных отрисовки с сервера
     val login: String,
     val num_graphs: Int,
     val graph: Array<Array<Float>>,

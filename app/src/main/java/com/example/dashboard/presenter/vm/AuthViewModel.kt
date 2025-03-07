@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dashboard.R
 import com.example.dashboard.domain.UseCase.AuthUseCase
+import com.example.dashboard.domain.UseCase.ThemeUseCase
 import com.example.dashboard.domain.api.LocalDataStore
 import com.example.dashboard.domain.model.DataWrapper
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,10 +18,10 @@ import org.intellij.lang.annotations.Flow
 import retrofit2.HttpException
 import javax.inject.Inject
 
-@HiltViewModel
 class AuthViewModel @Inject constructor(
    private val dataStore: LocalDataStore,
-    private val authUseCase: AuthUseCase
+    private val authUseCase: AuthUseCase,
+   private val themeUseCase: ThemeUseCase
 ): ViewModel() {
 
     private val _username = MutableStateFlow("")
@@ -30,9 +30,12 @@ class AuthViewModel @Inject constructor(
     val password: StateFlow<String> = _password
     var isLoading = MutableStateFlow(false)
     var token = MutableStateFlow("")
-    var simb = Flow()
     var httpErrorRes = MutableStateFlow(0)
-    val isDarkTheme = dataStore.get().stateIn(viewModelScope, SharingStarted.Eagerly,false)
+    val isDarkTheme = themeUseCase.getTheme().stateIn(
+        viewModelScope,
+        SharingStarted.Eagerly,
+        false
+    )
 
     fun toggleTheme(){
         viewModelScope.launch {
@@ -40,19 +43,13 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-
     fun setUsername(username: String){
         _username.value = username
     }
+
     fun setPassword(password: String){
         _password.value = password
     }
-
-    /*if(SaveManager.get(context = cont,key="HttpError") != null){
-        httpError = SaveManager.get(context = cont,key="HttpError").toString()
-    }
-    val focusManager = LocalFocusManager.current
-    */
 
     fun performLogin() {
         isLoading.value = true

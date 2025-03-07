@@ -1,8 +1,5 @@
 package com.example.dashboard.presenter.View.login
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,54 +31,37 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.dashboard.presenter.theme.DashboardTheme
 import com.example.dashboard.presenter.vm.AuthViewModel
 
 
-class LoginActivity : ComponentActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        installSplashScreen()
-        setContent {
-            Screen()
-        }
-    }
-}
-
 
 @Composable
-fun Screen(){
-    val viewModel: AuthViewModel = hiltViewModel()
-    val isDark = viewModel.isDarkTheme.collectAsState()
-    DashboardTheme(
-        darkTheme = isDark.value    ,
-        dynamicColor = false
+fun LoginScreen(navController: NavController){
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            LoginScreen()
-        }
+        LoginUI(navController)
     }
 }
 
 
 @Composable
-fun LoginScreen(){
-    val viewModel: AuthViewModel = hiltViewModel()
+fun LoginUI(
+    navController: NavController
+){
+    val viewModel: AuthViewModel = viewModel()
     val username by viewModel.username.collectAsState()
     val password by viewModel.password.collectAsState()
     val focusManager = LocalFocusManager.current
-    var simb = if(viewModel.isDarkTheme.collectAsState().value){
-        "☾"
-    }
-    else{
-        "☀"
-    }
+    val isLoading = viewModel.isLoading.collectAsState()
+    val httpErrorRes = viewModel.httpErrorRes.collectAsState()
+    val httpError = LocalContext.current.resources.getString(httpErrorRes.value)
+    var simb = if(viewModel.isDarkTheme.collectAsState().value) "☾" else "☀"
+
     Column {
         Row(
             horizontalArrangement = Arrangement.End,
@@ -175,7 +155,7 @@ fun LoginScreen(){
                     .fillMaxWidth()
                     .height(50.dp)
             ) {
-                if (isLoading) {
+                if (isLoading.value) {
                     CircularProgressIndicator(color = Color.White)
                 } else {
                     Text(

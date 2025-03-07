@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".Core.Application"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -33,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presenter.View.dashboard.MainActivity"
+            android:name=".presenter.View.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Dashboard">
 

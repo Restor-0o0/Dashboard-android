@@ -28,5 +28,4 @@ suspend fun <T> safeApiCall(apiCall: suspend () -> T): ResponseWrapper<T>{
     }catch (e: Exception){
         return ResponseWrapper.Error(AppError.ValidationError)
     }
-
 }

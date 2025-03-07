@@ -5,6 +5,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 
+/*
+@InstallIn(AppComponent::class)
 @Module
 class SaveManagerModule {
 
@@ -14,4 +16,4 @@ class SaveManagerModule {
         return SaveManager(context)
     }
 
-}
+}*/
