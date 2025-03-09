@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">dashboard</string>
+    <string name="View">Отображение</string>
+    <string name="group_by">Группировка</string>
+    <string name="Count">Количество</string>
+    <string name="Priority">Приоритет</string>
+    <string name="presentation">Представление</string>
+    <string name="error_unauthorized">Ошибка авторизации</string>
+    <string name="error_server">Ошибка сервера</string>
+    <string name="Exit">Выход</string>
+    <string name="error_network">Ошибка сети</string>
+    <string name="error_not_found">Ресурс не найден</string>
+    <string name="error_validation">Ошибка</string>
+    <string name="bad_request">Некорректный запрос</string>
+    <string name="error_forbidden">Нет прав доступа</string>
+    <string name="error_timeout">Сервер перегружен</string>
+    <string name="error_token_not_found">Нет токена</string>
+</resources>

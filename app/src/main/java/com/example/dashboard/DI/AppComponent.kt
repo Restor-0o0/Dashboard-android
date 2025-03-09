@@ -1,8 +1,10 @@
 package com.example.dashboard.DI
 
-import com.example.dashboard.Core.Application
-import com.example.dashboard.presenter.View.MainActivity
-import dagger.BindsInstance
+
+import com.example.core.DI.CoreComponent
+import com.example.dashboard.presenter.MainActivity
+import com.example.login.DI.LoginComponent
+import com.example.settings.DI.SettingsComponent
 import dagger.Component
 import javax.inject.Singleton
 
@@ -15,5 +17,8 @@ interface AppComponent {
     interface Factory{
         fun create(appModule: AppModule): AppComponent
     }
-    fun viewModelFactory(): ViewModelFactory
+    fun coreComponent(): CoreComponent.Factory
+    fun dashboardComponent() : DashboardComponent.Factory
+    fun loginComponent(): LoginComponent.Factory
+    fun settingsComponent(): SettingsComponent.Factory
 }

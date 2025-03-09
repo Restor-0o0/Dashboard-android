@@ -16,3 +16,8 @@ dependencyResolutionManagement {
 rootProject.name = "Dashboard"
 include(":app")
 include(":app:lib")
+
+include(":feature:login")
+include(":feature:dash")
+include(":feature:settings")
+include(":core")

@@ -1,6 +1,0 @@
-package com.example.dashboard.data.model
-
-data class Auth(
-    val username: String,
-    val password: String
-)
