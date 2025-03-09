@@ -1,22 +1,57 @@
 package com.example.dashboard.presenter.vm
 
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.dashboard.domain.UseCase.GetSettingsUseCase
 import com.example.dashboard.domain.UseCase.SetSettingsUseCase
+import com.example.dashboard.domain.UseCase.ThemeUseCase
+import com.example.dashboard.domain.model.DrawingTypes
+import com.example.dashboard.domain.model.SettingsData
+import com.example.dashboard.domain.model.TypesCount
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+
 
 class SettingsViewModel @Inject constructor(
     private val getSettingsUseCase: GetSettingsUseCase,
-    private val setSettingsUseCase: SetSettingsUseCase
+    private val setSettingsUseCase: SetSettingsUseCase,
+    private val themeUseCase: ThemeUseCase
 ): ViewModel() {
 
-    val DrawMap = drawsList.associateBy( { it.ID.toString() },{it.Name}) + drawsList.associateBy( { it.Name },{it.ID.toString()})
-    val TypeMap = typesList.associateBy( { it.ID.toString() },{it.Name}) + typesList.associateBy( { it.Name },{it.ID.toString()})
 
-    var SettingsList = remember{ mutableListOf<SettingsData>() }
-    var TypesCountList = remember{ mutableListOf<TypesCount>() }
-    var DrawingTypesList = remember{ mutableListOf<DrawingTypes>() }
+    init {
 
+    }
+
+   // val DrawMap = drawsList.associateBy( { it.ID.toString() },{it.Name}) + drawsList.associateBy( { it.Name },{it.ID.toString()})
+    //val TypeMap = typesList.associateBy( { it.ID.toString() },{it.Name}) + typesList.associateBy( { it.Name },{it.ID.toString()})
+
+    private var SettingsList = MutableStateFlow(SettingsData(
+        settings_data = TODO(),
+        drawing_types = TODO(),
+        types_count = TODO()
+    ))
+    var TypesCountList = MutableStateFlow(TypesCount(
+        ID = TODO(),
+        Name = TODO()
+    ))
+    var DrawingTypesList =  MutableStateFlow(DrawingTypes(
+        ID = TODO(),
+        Name = TODO(),
+        Comment = TODO()
+    ))
+
+    var isLoading = MutableStateFlow(false)
+
+    var httpErrorRes = MutableStateFlow(0)
+    val isDarkTheme = themeUseCase.getTheme().stateIn(
+        viewModelScope,
+        SharingStarted.Eagerly,
+        false
+    )
 
 
 

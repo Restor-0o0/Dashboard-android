@@ -9,6 +9,15 @@ import com.example.dashboard.presenter.View.dashboard.DashboardScreen
 import com.example.dashboard.presenter.View.login.LoginScreen
 import com.example.dashboard.presenter.View.settings.SettingsScreen
 
+
+
+sealed class Screen(val route:String){
+    object Login: Screen("login")
+    object Dashboard: Screen("dashboard")
+    object Settings: Screen("settings")
+}
+
+
 @Composable
 fun AppNavigation(){
     val navController = rememberNavController()
@@ -16,8 +25,8 @@ fun AppNavigation(){
         navController = navController,
         startDestination = "login"
     ){
-        composable("login"){ LoginScreen(navController) }
-        composable("dashboard"){ DashboardScreen(navController) }
-        composable("settings"){ SettingsScreen(navController) }
+        composable(Screen.Login.route){ LoginScreen(navController) }
+        composable(Screen.Dashboard.route){ DashboardScreen(navController) }
+        composable(Screen.Settings.route){ SettingsScreen(navController) }
     }
 }

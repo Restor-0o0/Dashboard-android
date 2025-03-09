@@ -4,7 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,16 +23,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.example.dashboard.R
 import com.example.dashboard.domain.model.SettingsData
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.dashboard.presenter.vm.SettingsViewModel
 
 
 @Composable
 fun MenuBar(
-    settingsList: MutableList<SettingsData>,
-
+    navController: NavController
     ){
+    val viewModel: SettingsViewModel = viewModel()
     val imageSave = painterResource(R.drawable.save)
     val imageBack = painterResource(R.drawable.back)
-    var simb by remember { mutableStateOf("") }
+    var simb = viewModel.`
 
     if(theme.value == true)
     {
@@ -49,7 +60,7 @@ fun MenuBar(
 
             IconButton(
                 onClick = {
-                    settingsCallback?.onSettingsSave()
+                    navController.popBackStack()
                 },
                 modifier = Modifier
                     .background(Color(MaterialTheme.colorScheme.background.toArgb()))
@@ -67,8 +78,7 @@ fun MenuBar(
                 )
             }
             Button(onClick = {
-                theme.value = theme.value.not()
-                SaveManager.save(cont, "theme", theme.value.toString())
+                тему менят
             },
 
                 modifier = Modifier
