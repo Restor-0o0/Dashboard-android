@@ -1,15 +1,16 @@
 package com.example.settings.DI
 
+import android.app.Application
 import dagger.Subcomponent
 
 
 @Subcomponent(
     modules = [
-        SettingsApiModule::class,
-        SettingsRepositoryModule::class
+
     ]
 )
 interface SettingsComponent {
+    fun inject(application: Application)
 
     @Subcomponent.Factory
     interface Factory{

@@ -1,20 +1,19 @@
 package com.example.dashboard.presenter.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.core.presenter.Screen
 
-import com.example.dashboard.presenter.dashboard.DashboardScreen
+import com.example.dash.presenter.dashboard.DashboardScreen
+import com.example.dashboard.presenter.MainActivity
 import com.example.login.presenter.login.LoginScreen
 import com.example.settings.presenter.settings.SettingsScreen
 
 
-sealed class Screen(val route:String){
-    object Login: Screen("login")
-    object Dashboard: Screen("dashboard")
-    object Settings: Screen("settings")
-}
+
 
 
 @Composable
@@ -22,17 +21,23 @@ fun AppNavigation(){
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = "login"
+        startDestination = Screen.Login.route
     ){
-        composable(Screen.Login.route){ LoginScreen(navController) }
+        composable(Screen.Login.route){
+            LoginScreen(
+                navController,
+                (LocalContext.current as MainActivity).viewModelFactory
+        ) }
         composable(Screen.Dashboard.route){
             DashboardScreen(
-                navController
+                navController,
+                (LocalContext.current as MainActivity).viewModelFactory
             )
         }
         composable(Screen.Settings.route){
             SettingsScreen(
-                navController
+                navController,
+                (LocalContext.current as MainActivity).viewModelFactory
             )
         }
     }

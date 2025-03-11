@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.dashboard"
+    namespace = "com.example.dash"
     compileSdk = 35
 
     defaultConfig {

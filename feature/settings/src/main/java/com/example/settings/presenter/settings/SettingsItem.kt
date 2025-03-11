@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -24,8 +25,11 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,14 +40,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.settings.domain.model.SettingsData
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.settings.R
+import com.example.settings.domain.model.SettingsItem
+import com.example.settings.presenter.SettingsViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsItem(
-    settItem: SettingsData,
-) {
+    settItem: SettingsItem,
+    navController: NavController,
+    viewModel: SettingsViewModel
+){
+    val typesCountList = viewModel.TypesCountList.collectAsState()
+    val drawingTypesList = viewModel.DrawingTypesList.collectAsState()
+    val typesMap = viewModel.TypeMap.collectAsState()
+    val drawingMap = viewModel.DrawMap.collectAsState()
+
+
     var expanded by remember { mutableStateOf(false) }
     var expanded1 by remember { mutableStateOf(false) }
     var expanded2 by remember { mutableStateOf(false) }
@@ -131,7 +147,7 @@ fun SettingsItem(
                     ) {
                     TextField(
                         readOnly = true,
-                        value = TypeMap.get(settItem.TypeCount.toString()).toString(),
+                        value = typesMap.value[settItem.TypeCount.toString()].toString(),
                         onValueChange = { },
                         trailingIcon = {
                             ExposedDropdownMenuDefaults.TrailingIcon(
@@ -160,13 +176,13 @@ fun SettingsItem(
                         modifier = Modifier
                             .background(Color(MaterialTheme.colorScheme.background.toArgb()))
                     ) {
-                        for (item_draw in typesList) {
+                        for (item_draw in typesCountList.value) {
                             DropdownMenuItem(
                                 text = { Text(
                                     text = item_draw.Name,
                                     color = Color(MaterialTheme.colorScheme.surface.toArgb())) },
                                 onClick = {
-                                    settItem.TypeCount = TypeMap.get(item_draw.Name)!!.toInt()
+                                    settItem.TypeCount = typesMap.value[item_draw.Name]!!.toInt()
                                     expanded = false
                                 },
                                 modifier = Modifier
@@ -224,7 +240,7 @@ fun SettingsItem(
                     ) {
                     TextField(
                         readOnly = true,
-                        value = DrawMap.get(settItem.DrawingType.toString()).toString(),
+                        value = drawingMap.value[settItem.DrawingType.toString()].toString(),
                         onValueChange = { },
                         trailingIcon = {
                             ExposedDropdownMenuDefaults.TrailingIcon(
@@ -253,14 +269,14 @@ fun SettingsItem(
                         modifier = Modifier
                             .background(Color(MaterialTheme.colorScheme.background.toArgb()))
                     ) {
-                        for (item_draw in drawsList) {
+                        for (item_draw in drawingTypesList.value) {
                             Log.e("Itemss", item_draw.Name)
                             DropdownMenuItem(
                                 text = { Text(
                                     text = item_draw.Name,
                                     color = Color(MaterialTheme.colorScheme.surface.toArgb())) },
                                 onClick = {
-                                    settItem.DrawingType = DrawMap.get(item_draw.Name)!!.toInt()
+                                    settItem.DrawingType = drawingMap.value[item_draw.Name]!!.toInt()
                                     expanded1 = false
                                 },
                                 modifier = Modifier

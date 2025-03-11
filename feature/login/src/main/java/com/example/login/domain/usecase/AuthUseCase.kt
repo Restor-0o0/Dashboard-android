@@ -11,6 +11,8 @@ import javax.inject.Inject
 class AuthUseCase @Inject constructor(
     private val secureTokenRepository: SecureTokenRepository,
     private val authRepository: com.example.login.domain.api.AuthRepository
+
+
 ) {
 
     suspend fun login(

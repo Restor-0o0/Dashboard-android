@@ -31,35 +31,50 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.core.presenter.Screen
 import com.example.login.presenter.AuthViewModel
 
 
 
 @Composable
-fun LoginScreen(navController: NavController){
+fun LoginScreen(
+    navController: NavController,
+    viewModelFactory: ViewModelProvider.Factory
+){
+    val viewModel: AuthViewModel = viewModel(factory = viewModelFactory)
+
+    if(viewModel.tokenExists()){
+        navController.navigate(Screen.Dashboard.route)
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        LoginUI(navController)
+        LoginUI(
+            navController,
+            viewModel
+        )
     }
 }
 
 
 @Composable
 fun LoginUI(
-    navController: NavController
+    navController: NavController,
+    viewModel: AuthViewModel
 ){
-    val viewModel: AuthViewModel = viewModel()
     val username by viewModel.username.collectAsState()
     val password by viewModel.password.collectAsState()
     val focusManager = LocalFocusManager.current
     val isLoading = viewModel.isLoading.collectAsState()
     val httpErrorRes = viewModel.httpErrorRes.collectAsState()
-    val httpError = LocalContext.current.resources.getString(httpErrorRes.value)
-    var simb = if(viewModel.isDarkTheme.collectAsState().value) "☾" else "☀"
+    val httpError = if(httpErrorRes.value != null)LocalContext.current.resources.getString(httpErrorRes.value!!) else ""
+    val isDark = viewModel.isDarkTheme.collectAsState()
+    val simb = if(isDark.value) "☾" else "☀"
 
     Column {
         Row(

@@ -3,13 +3,16 @@ package com.example.settings.presenter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.domain.UseCase.ThemeUseCase
+import com.example.core.domain.model.DataWrapper
 import com.example.settings.domain.model.DrawingTypes
-import com.example.settings.domain.model.SettingsData
+import com.example.settings.domain.model.SettingsItem
 import com.example.settings.domain.model.TypesCount
 import com.example.settings.domain.usecase.GetSettingsUseCase
 import com.example.settings.domain.usecase.SetSettingsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,39 +23,33 @@ class SettingsViewModel @Inject constructor(
     private val setSettingsUseCase: SetSettingsUseCase,
     private val themeUseCase: ThemeUseCase
 ): ViewModel() {
-
-
-    init {
-
-    }
-
-   // val DrawMap = drawsList.associateBy( { it.ID.toString() },{it.Name}) + drawsList.associateBy( { it.Name },{it.ID.toString()})
-    //val TypeMap = typesList.associateBy( { it.ID.toString() },{it.Name}) + typesList.associateBy( { it.Name },{it.ID.toString()})
-
-    private var SettingsList = MutableStateFlow(
-        SettingsData(
-        settings_data = TODO(),
-        drawing_types = TODO(),
-        types_count = TODO()
+    val SettingsList = MutableStateFlow<List<SettingsItem>>(
+        emptyList()
     )
-    )
-    var TypesCountList = MutableStateFlow(
-        TypesCount(
-        ID = TODO(),
-        Name = TODO()
-    )
-    )
-    var DrawingTypesList =  MutableStateFlow(
-        DrawingTypes(
-        ID = TODO(),
-        Name = TODO(),
-        Comment = TODO()
-    )
+    var TypesCountList = MutableStateFlow<List<TypesCount>>(
+        emptyList()
     )
 
+    var DrawingTypesList =  MutableStateFlow<List<DrawingTypes>>(
+        emptyList()
+    )
+
+    val DrawMap: StateFlow<Map<String, String>> = DrawingTypesList.map{
+        list ->
+            list.associate { it.ID.toString() to it.Name  } +
+            list.associate { it.Name to it.ID.toString() }
+
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyMap())
+
+    val TypeMap: StateFlow<Map<String,String>> = TypesCountList.map{
+        list ->
+            list.associate { it.ID.toString() to it.Name } +
+            list.associate { it.Name to it.ID.toString() }
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyMap())
+
+    val saveSuccess = MutableStateFlow(false)
     var isLoading = MutableStateFlow(false)
-
-    var httpErrorRes = MutableStateFlow(0)
+    var httpErrorRes = MutableStateFlow<Int?>(null)
     val isDarkTheme = themeUseCase.getTheme().stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
@@ -61,64 +58,63 @@ class SettingsViewModel @Inject constructor(
 
 
 
-    fun dataSend(){/*
+    fun toggleTheme(){
+        viewModelScope.launch {
+            themeUseCase.saveTheme(!isDarkTheme.value)
+        }
+    }
+
+    fun setSettings(){
         viewModelScope.launch {
             try {
-                /*var SendList = mutableListOf<SettingsSendData>()
-                for(ind in settingsList)
-                {
-                    SendList.add(SettingsSendData(
-                        ID = ind.ID,
-                        CountVals = ind.CountVals,
-                        Priority = ind.Priority,
-                        User = ind.User,
-                        Group = ind.Group,
-                        TypeCount = ind.TypeCount,
-                        DrawingType = ind.DrawingType,
-                    ))
-                }*/
-                RetrofitInstance.dataDashService.setSettingsData(
-                    token ="Token "+ SaveManager.get(context = cont,"token"),
-                    data = settingsList
-                )
+                isLoading.value = false
+                val response = setSettingsUseCase.setSettings(SettingsList.value)
+                when(response){
+                    is DataWrapper.Error -> {
+                        httpErrorRes.value = response.error.messageRes
+                    }
+                    is DataWrapper.Success -> {
+                        saveSuccess.value = true
+                    }
+                }
 
             }
             catch (e : Exception)
             {
-                Log.e("SizeSett",e.toString()+" "+ AuthMan.getToken(context = cont))
+
             }
             finally {
-                settingsCallback?.onSettingsBack()
+                isLoading.value = false
             }
-            scope.cancel()
         }
-    */
     }
 
 
-    fun dataSett(){/*
-        scope.launch {
+    fun getSettings(){
+        viewModelScope.launch {
             try {
-                var localList1 = RetrofitInstance.dataDashService.getSettingsData(token ="Token "+ SaveManager.get(context = cont,"token"))
-                localList1.forEach(){
-                    SettingsList.add(it)
+                isLoading.value = true
+
+                val response = getSettingsUseCase.loadSettings()
+                when(response){
+                    is DataWrapper.Error -> {
+                        httpErrorRes.value = response.error.messageRes!!
+                    }
+                    is DataWrapper.Success -> {
+                        SettingsList.value = response.data.settings_data
+                        DrawingTypesList.value = response.data.drawing_types
+                        TypesCountList.value = response.data.types_count
+                    }
                 }
-                var localList2 = RetrofitInstance.dataDashService.getTypesCount(token ="Token "+ SaveManager.get(context = cont,"token"))
-                localList2.forEach(){
-                    TypesCountList.add(it)
-                }
-                var locallist3 = RetrofitInstance.dataDashService.getDrawingTypes(token ="Token "+ SaveManager.get(context = cont,"token"))
-                locallist3.forEach(){
-                    DrawingTypesList.add(it)
-                }
-                Log.e("SizeSett",SettingsList.size.toString()+" "+ AuthMan.getToken(context = cont))
             }
             catch (e : Exception)
             {
-                Log.e("SizeSett",e.toString()+" "+ AuthMan.getToken(context = cont))
+
             }
-            scope.cancel()
+            finally {
+                isLoading.value = false
+            }
         }
-    */
+
     }
 }

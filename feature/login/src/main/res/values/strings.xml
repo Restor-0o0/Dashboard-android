@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">login</string>
+    <string name="Dashboard">login</string>
     <string name="View">Отображение</string>
     <string name="group_by">Группировка</string>
     <string name="Count">Количество</string>

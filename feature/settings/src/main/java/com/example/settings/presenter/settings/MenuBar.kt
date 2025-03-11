@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,12 +31,14 @@ import com.example.settings.R
 
 @Composable
 fun MenuBar(
-    navController: NavController
-    ){
-    val viewModel: SettingsViewModel = viewModel()
+    navController: NavController,
+    parentViewModel: SettingsViewModel? = null
+){
+    val viewModel: SettingsViewModel = parentViewModel ?: viewModel()
     val imageSave = painterResource(R.drawable.save)
     val imageBack = painterResource(R.drawable.back)
-    val simb = if(viewModel.isDarkTheme.collectAsState().value) "☾" else "☀"
+    val isDark = viewModel.isDarkTheme.collectAsState()
+    val simb = if(isDark.value) "☾" else "☀"
 
     Column {
         Row(
@@ -66,7 +69,7 @@ fun MenuBar(
                 )
             }
             Button(onClick = {
-                //тему менят
+                viewModel.toggleTheme()
             },
 
                 modifier = Modifier
@@ -82,7 +85,7 @@ fun MenuBar(
             }
             IconButton(
                 onClick = {
-                    //dataSend()
+                    viewModel.setSettings()
                 },
                 modifier = Modifier
                     .background(Color(MaterialTheme.colorScheme.background.toArgb()))
@@ -100,7 +103,7 @@ fun MenuBar(
                 )
             }
         }
-        Row(
+        Row( //полосочка просто
             modifier = Modifier
                 .background(Color(MaterialTheme.colorScheme.secondary.toArgb()))
                 .fillMaxWidth()

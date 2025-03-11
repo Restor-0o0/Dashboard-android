@@ -3,8 +3,10 @@ package com.example.login.presenter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.domain.UseCase.ThemeUseCase
+import com.example.core.domain.UseCase.TokenExistUseCase
 import com.example.core.domain.api.LocalDataStore
 import com.example.core.domain.model.DataWrapper
+import com.example.login.domain.usecase.AuthUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,9 +15,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(
-    private val dataStore: com.example.core.domain.api.LocalDataStore,
-    private val authUseCase: com.example.login.domain.usecase.AuthUseCase,
-    private val themeUseCase: com.example.core.domain.UseCase.ThemeUseCase
+    private val authUseCase: AuthUseCase,
+    private val themeUseCase: ThemeUseCase,
+    private val tokenExistUseCase: TokenExistUseCase
 ): ViewModel() {
 
     private val _username = MutableStateFlow("")
@@ -24,16 +26,22 @@ class AuthViewModel @Inject constructor(
     val password: StateFlow<String> = _password
     var isLoading = MutableStateFlow(false)
     var token = MutableStateFlow("")
-    var httpErrorRes = MutableStateFlow(0)
+    var httpErrorRes = MutableStateFlow<Int?>(null)
     val isDarkTheme = themeUseCase.getTheme().stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
         false
     )
 
+    fun tokenExists(): Boolean {
+        return tokenExistUseCase.tokenExist()
+    }
+
+
+
     fun toggleTheme(){
         viewModelScope.launch {
-            dataStore.save(!isDarkTheme.value)
+            themeUseCase.saveTheme(!isDarkTheme.value)
         }
     }
 
@@ -46,9 +54,8 @@ class AuthViewModel @Inject constructor(
     }
 
     fun performLogin() {
-        isLoading.value = true
         viewModelScope.launch {
-
+            isLoading.value = true
             val result = authUseCase.login(
                 username.value!!,
                 password.value!!
@@ -61,6 +68,7 @@ class AuthViewModel @Inject constructor(
                     token.emit(result.data.auth_token)
                 }
             }
+            isLoading.value = false
         }
     }
     /*if(theme.value == true)

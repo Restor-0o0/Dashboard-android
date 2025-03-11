@@ -1,15 +1,16 @@
 package com.example.login.DI
 
+import android.app.Application
 import dagger.Subcomponent
 
 
 @Subcomponent(
     modules = [
-        AuthApiModule::class,
-        AuthRepositoryModule::class
+
     ]
 )
 interface LoginComponent {
+    fun inject(application: Application)
 
     @Subcomponent.Factory
     interface Factory{

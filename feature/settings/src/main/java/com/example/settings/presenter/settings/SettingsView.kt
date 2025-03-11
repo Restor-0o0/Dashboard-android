@@ -19,9 +19,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,14 +32,18 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.dashboard.R
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.core.presenter.Screen
+import com.example.settings.R
+import com.example.settings.presenter.SettingsViewModel
 
 
 @Composable
 fun SettingsView(
-    theme: Boolean,
-    ){
-
+    navController: NavController,
+    viewModel: SettingsViewModel
+){
     var visibleState by remember{
         mutableStateOf(false)
     }
@@ -53,9 +59,8 @@ fun SettingsView(
                 .fillMaxSize()
         ){
             MenuBar(
-                settingsCallback = settingsCallback,
-                settingsList = SettingsList,
-                theme = theme
+                navController = navController,
+                parentViewModel = viewModel
             )
 
             Column(
@@ -126,9 +131,8 @@ fun SettingsView(
                     //    .background(Color(MaterialTheme.colorScheme.primary.toArgb()))
                 ) {
                     SettingsItemsList(
-                        settingsList = SettingsList,
-                        drawingTypesList = DrawingTypesList,
-                        typesCountList = TypesCountList,
+                        navController = navController,
+                        viewModel = viewModel
                     )
 
                 }
@@ -142,7 +146,9 @@ fun SettingsView(
         ){
             Button(
                 onClick = {
-
+                    navController.navigate(Screen.Login.route){
+                        popUpTo(Screen.Dashboard.route)
+                    }
                 },
                 modifier = Modifier
                     .width(160.dp)

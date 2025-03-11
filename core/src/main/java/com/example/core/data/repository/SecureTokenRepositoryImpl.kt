@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.example.core.domain.api.SecureTokenRepository
+import com.example.core.utils.TOKEN_SAVE_NAME
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,6 +40,6 @@ class SecureTokenRepositoryImpl @Inject constructor(
 
     companion object{
         private const val PREFS_NAME = "secure_pref"
-        private const val TOKEN_NAME = "auth_token"
+        private const val TOKEN_NAME = TOKEN_SAVE_NAME
     }
 }

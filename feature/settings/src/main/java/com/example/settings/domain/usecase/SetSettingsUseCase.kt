@@ -5,16 +5,17 @@ import com.example.core.domain.api.SecureTokenRepository
 import com.example.core.domain.model.AppError
 import com.example.core.domain.model.DataWrapper
 import com.example.settings.domain.api.SettingsRepository
+import com.example.settings.domain.model.SettingsItem
 import javax.inject.Inject
 
 private val TAG = "SetSettingsUseCase"
 
 class SetSettingsUseCase @Inject constructor(
-    private val secureTokenRepository: com.example.core.domain.api.SecureTokenRepository,
+    private val secureTokenRepository: SecureTokenRepository,
     private val settingsRepository: SettingsRepository
 ) {
 
-    suspend fun setSettings(settingsData: List<com.example.settings.domain.model.SettingsData>): DataWrapper<Unit> {
+    suspend fun setSettings(settingsData: List<SettingsItem>): DataWrapper<Unit> {
         val token = secureTokenRepository.getToken()
         token?.let{
             val response = settingsRepository.setSettingsData(

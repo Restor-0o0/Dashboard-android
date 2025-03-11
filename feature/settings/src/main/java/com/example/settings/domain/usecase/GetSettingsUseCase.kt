@@ -5,6 +5,7 @@ import com.example.core.domain.api.SecureTokenRepository
 import com.example.core.domain.model.AppError
 import com.example.core.domain.model.DataWrapper
 import com.example.settings.domain.model.SettingsData
+import com.example.settings.domain.model.SettingsItem
 import javax.inject.Inject
 
 private val TAG = "GetSettingsUseCase"

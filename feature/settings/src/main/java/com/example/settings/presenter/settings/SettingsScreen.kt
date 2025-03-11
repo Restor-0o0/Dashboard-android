@@ -9,16 +9,33 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.dashboard.domain.model.DrawingTypes
-import com.example.dashboard.domain.model.SettingsData
-import com.example.dashboard.domain.model.TypesCount
+import com.example.settings.presenter.SettingsViewModel
+
 
 @Composable
-fun SettingsScreen(navController: NavController) {
+fun SettingsScreen(
+    navController: NavController,
+    viewModelFactory: ViewModelProvider.Factory
+){
+    val viewModel: SettingsViewModel = viewModel(factory = viewModelFactory)
+
+    val saveSuccess = viewModel.saveSuccess.collectAsState()
+
+    LaunchedEffect(saveSuccess) {
+        if(saveSuccess.value){
+            navController.popBackStack()
+        }
+    }
+
     Surface() {
         Column(
             modifier = Modifier
@@ -27,12 +44,20 @@ fun SettingsScreen(navController: NavController) {
                 .verticalScroll(rememberScrollState())
         ) {
             SettingsView(
-                theme = Theme
+                navController = navController,
+                viewModel = viewModel
             )
         }
     }
 }
 
+
+
+@Preview
+@Composable
+fun PreviewSettingsScreen(){
+
+}
 
 
 

@@ -8,6 +8,7 @@ import dagger.Module
 
 @Module
 interface ThemeRepositoryModule {
+
     @Binds
     fun bindThemeRepository(impl: ThemeRepositoryImpl): ThemeRepository
 }

@@ -6,6 +6,7 @@ import com.example.core.utils.TYPES_LIST
 
 import com.example.settings.domain.model.DrawingTypes
 import com.example.settings.domain.model.SettingsData
+import com.example.settings.domain.model.SettingsItem
 import com.example.settings.domain.model.TypesCount
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -28,6 +29,6 @@ interface SettingsService {
     @PUT(SETT_LIST)
     suspend fun setSettingsData( // Отправка данных для отрисовки
         @Header("Authorization") token: String?,
-        @Body data: List<SettingsData>
+        @Body data: List<SettingsItem>
     ): Unit
 }
