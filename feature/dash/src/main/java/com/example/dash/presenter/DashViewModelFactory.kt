@@ -2,13 +2,13 @@ package com.example.dash.presenter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.core.domain.UseCase.TokenExistUseCase
+import com.example.core.domain.UseCase.TokenUseCase
 import com.example.dash.domain.usecase.GetDashDataUseCase
 import javax.inject.Inject
 
 class DashViewModelFactory@Inject constructor(
     private val getDashDataUseCase: GetDashDataUseCase,
-    private val tokenExistUseCase: TokenExistUseCase
+    private val tokenExistUseCase: TokenUseCase
 ): ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

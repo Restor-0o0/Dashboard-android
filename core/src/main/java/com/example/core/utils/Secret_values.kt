@@ -1,6 +1,6 @@
 package com.example.core.utils
 
-const val IP_HOST = "http://counterdev.sibstrin.ru/"
+const val IP_HOST = "http://31.133.104.162/"
 const val AUTH_PATH = "/auth/token/login/"
 const val DATA_LIST = "/api/sensor/sensorlist"
 const val TYPES_LIST = "/api/typescountlist"

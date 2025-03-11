@@ -11,7 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -35,15 +38,24 @@ fun DashboardScreen(
     navController: NavController,
     viewModelFactory: ViewModelProvider.Factory
 ){
+
     val viewModel: DashViewModel = viewModel(factory = viewModelFactory)
     val error = viewModel.error.collectAsState()
+    val launched = remember {mutableStateOf(true)}
 
-    if(!viewModel.tokenExists()){
-        navController.popBackStack()
+    if(launched.value){
+
+        if(!viewModel.tokenExists()){
+            navController.popBackStack()
+        }else{
+            viewModel.getData()
+        }
+        launched.value = false
     }
 
     when(error.value){
         AppError.Unauthorized ->{
+            viewModel.clearToken()
             navController.popBackStack()
         }
         else -> {}
@@ -66,7 +78,7 @@ fun DashboardScreen(
 
 
 
-
+/*
 @Preview(
     showBackground = true,
     showSystemUi = false
@@ -112,3 +124,4 @@ fun GreetingPreview() {
         }
     }
 }
+*/

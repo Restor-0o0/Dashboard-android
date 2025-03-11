@@ -35,21 +35,23 @@ fun DashboardView(
     navController: NavController,
     viewModel: DashViewModel
 ){
-    val Login = viewModel.Login.collectAsState()
+    val login = viewModel.Login.collectAsState()
     val state = rememberScrollState()
     val isLoading = viewModel.isLoading.collectAsState()
     val NumberData = viewModel.NumberData.collectAsState()
     val GraphicData = viewModel.GraphicData.collectAsState()
     val httpErrorRes = viewModel.httpErrorRes.collectAsState()
     val httpError = if(httpErrorRes.value != null)LocalContext.current.getString(httpErrorRes.value!!) else ""
-
-
+Column(
+    modifier = Modifier
+        .background(Color(MaterialTheme.colorScheme.background.toArgb()))
+        .fillMaxSize()
+) {
     InfoBar(
+        login = login.value,
         navController= navController,
         viewModel = viewModel
     )
-
-
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -60,7 +62,6 @@ fun DashboardView(
 
 
     ) {
-
         if (isLoading.value) {
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -164,6 +165,8 @@ fun DashboardView(
         }
 
     }
+}
+
 
 
 }

@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
+
+private val TAG = "ThemeRepositoryImpl"
+
 @Singleton
 class ThemeRepositoryImpl @Inject constructor(
     private val context: Context

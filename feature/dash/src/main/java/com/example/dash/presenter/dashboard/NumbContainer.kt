@@ -56,21 +56,23 @@ fun NumbContainer(
                 .padding(top = 10.dp)
         )
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(bottom = 25.dp)
+
         ) {
             Text(
                 text = numb.toString(),
                 color = Color(MaterialTheme.colorScheme.surface.toArgb()),
                 textAlign = TextAlign.Center,
-                fontSize = 40.sp,
+                fontSize = 30.sp,
                 modifier = Modifier
 
             )
             Text(
                 text = " " + metric,
                 color = Color(MaterialTheme.colorScheme.surface.toArgb()),
-                fontSize = 40.sp,
+                fontSize = 30.sp,
                 modifier = Modifier
 
             )

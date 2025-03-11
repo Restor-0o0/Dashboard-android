@@ -1,10 +1,12 @@
 package com.example.dash.presenter
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.core.domain.UseCase.TokenExistUseCase
+import com.example.core.domain.UseCase.TokenUseCase
 import com.example.core.domain.model.AppError
 import com.example.core.domain.model.DataWrapper
+import com.example.dash.common.MODULE_TAG
 import com.example.dash.domain.model.Graphdata
 import com.example.dash.domain.model.Numbdata
 import com.example.dash.domain.usecase.GetDashDataUseCase
@@ -12,9 +14,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private val TAG = "DashViewModel"
+
 class DashViewModel @Inject constructor(
     private val getDashDataUseCase: GetDashDataUseCase,
-    private val tokenExistUseCase: TokenExistUseCase
+    private val tokenExistUseCase: TokenUseCase,
 ) : ViewModel(
 
 ) {
@@ -43,27 +47,34 @@ class DashViewModel @Inject constructor(
 
 
     fun tokenExists(): Boolean {
+        Log.d("$MODULE_TAG/$TAG","tokenExists")
         return tokenExistUseCase.tokenExist()
+    }
+    fun clearToken(){
+        Log.d("$MODULE_TAG/$TAG","clearToken")
+        tokenExistUseCase.clearToken()
     }
 
     fun getData() {
+        Log.d("$MODULE_TAG/$TAG","getData")
         viewModelScope.launch {
             isLoading.emit(true)
             try {
                 val data =  getDashDataUseCase.getData()
                 when(data){
                     is DataWrapper.Error -> {
-                        httpErrorRes.emit(data.error.messageRes!!)
+                        httpErrorRes.value = data.error.messageRes!!
                         error.value = data.error
                     }
                     is DataWrapper.Success -> {
-                        NumberData.emit( data.data.numbdata )
-                        GraphicData.emit(data.data.graphdata)
-                        Login.emit(data.data.login)
+                        NumberData.value =  data.data.numbdata
+                        GraphicData.value = data.data.graphdata
+                        Login.value = data.data.login
                     }
-
                 }
-
+            }
+            catch (e:Exception){
+                Log.e("$MODULE_TAG/$TAG",e.message.toString())
             }
             finally{
                 isLoading.emit(false)

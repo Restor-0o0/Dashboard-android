@@ -24,17 +24,13 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var isDark: Flow<Boolean>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         (applicationContext as Application).appComponent.inject(this)
-        isDark = flow{
-            themeUseCase.getTheme()
-        }
+
         setContent {
-            val isDarkTheme  = isDark.collectAsState(false);
+            val isDarkTheme  = themeUseCase.getTheme().collectAsState(false) //isDark.collectAsState(false);
             DashboardTheme(
                 darkTheme = isDarkTheme.value,
                 dynamicColor = false
