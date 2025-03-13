@@ -146,9 +146,8 @@ fun SettingsView(
         ){
             Button(
                 onClick = {
-                    navController.navigate(Screen.Login.route){
-                        popUpTo(Screen.Dashboard.route)
-                    }
+                    viewModel.clearToken()
+                    navController.popBackStack(Screen.Login.route,inclusive = false)
                 },
                 modifier = Modifier
                     .width(160.dp)

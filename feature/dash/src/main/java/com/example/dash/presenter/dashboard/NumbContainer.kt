@@ -4,10 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NumbContainer(
     numb: Float,
@@ -51,31 +55,25 @@ fun NumbContainer(
             text = head_numb,
             color = Color(MaterialTheme.colorScheme.surface.toArgb()),
             textAlign = TextAlign.Center,
-            fontSize = 20.sp,
+            fontSize = 25.sp,
             modifier = Modifier
                 .padding(top = 10.dp)
+
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(bottom = 25.dp)
 
-        ) {
-            Text(
-                text = numb.toString(),
-                color = Color(MaterialTheme.colorScheme.surface.toArgb()),
-                textAlign = TextAlign.Center,
-                fontSize = 30.sp,
+            FlowRow(
+                horizontalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Center,
                 modifier = Modifier
+                    .padding(bottom = 25.dp)
+                    .wrapContentSize()
 
-            )
-            Text(
-                text = " " + metric,
-                color = Color(MaterialTheme.colorScheme.surface.toArgb()),
-                fontSize = 30.sp,
-                modifier = Modifier
+            ) {
+                NumberMetric(
+                    numb = numb.toString() ,
+                    metric = " $metric"
+                )
+            }
 
-            )
-        }
     }
 }

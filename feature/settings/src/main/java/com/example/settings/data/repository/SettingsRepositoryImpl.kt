@@ -36,7 +36,7 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun getSettingsData(token: String): ResponseWrapper<SettingsData> {
         Log.d("$MODULE_TAG/$TAG","getSettingsData")
         return safeApiCall {api.getSettingsData(
-                token
+            "Token $token"
             )
         }
     }

@@ -4,6 +4,7 @@ import com.example.core.data.model.ResponseWrapper
 import com.example.core.domain.api.SecureTokenRepository
 import com.example.core.domain.model.AppError
 import com.example.core.domain.model.DataWrapper
+import com.example.settings.domain.api.SettingsRepository
 import com.example.settings.domain.model.SettingsData
 import com.example.settings.domain.model.SettingsItem
 import javax.inject.Inject
@@ -11,7 +12,7 @@ import javax.inject.Inject
 private val TAG = "GetSettingsUseCase"
 
 class GetSettingsUseCase @Inject constructor(
-    private val repository: com.example.settings.domain.api.SettingsRepository,
+    private val repository: SettingsRepository,
     private val secureTokenRepository: SecureTokenRepository
 ) {
 

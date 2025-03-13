@@ -1,9 +1,12 @@
 package com.example.settings.presenter
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.domain.UseCase.ThemeUseCase
+import com.example.core.domain.UseCase.TokenUseCase
 import com.example.core.domain.model.DataWrapper
+import com.example.settings.common.MODULE_TAG
 import com.example.settings.domain.model.DrawingTypes
 import com.example.settings.domain.model.SettingsItem
 import com.example.settings.domain.model.TypesCount
@@ -18,10 +21,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+private val TAG = "SettingsViewModel"
+
 class SettingsViewModel @Inject constructor(
     private val getSettingsUseCase: GetSettingsUseCase,
     private val setSettingsUseCase: SetSettingsUseCase,
-    private val themeUseCase: ThemeUseCase
+    private val themeUseCase: ThemeUseCase,
+    private val tokenExistUseCase: TokenUseCase,
 ): ViewModel() {
     val SettingsList = MutableStateFlow<List<SettingsItem>>(
         emptyList()
@@ -57,8 +63,12 @@ class SettingsViewModel @Inject constructor(
     )
 
 
-
+    fun clearToken(){
+        Log.d("$MODULE_TAG/$TAG","clearToken")
+        tokenExistUseCase.clearToken()
+    }
     fun toggleTheme(){
+        Log.d("$MODULE_TAG/$TAG","toggleTheme")
         viewModelScope.launch {
             themeUseCase.saveTheme(!isDarkTheme.value)
         }
@@ -66,6 +76,7 @@ class SettingsViewModel @Inject constructor(
 
     fun setSettings(){
         viewModelScope.launch {
+            Log.d("$MODULE_TAG/$TAG","setSettings")
             try {
                 isLoading.value = false
                 val response = setSettingsUseCase.setSettings(SettingsList.value)
@@ -92,15 +103,18 @@ class SettingsViewModel @Inject constructor(
 
     fun getSettings(){
         viewModelScope.launch {
+            Log.d("$MODULE_TAG/$TAG","getSettings")
             try {
                 isLoading.value = true
 
                 val response = getSettingsUseCase.loadSettings()
                 when(response){
                     is DataWrapper.Error -> {
+                        Log.d("$MODULE_TAG/$TAG","getSettings error")
                         httpErrorRes.value = response.error.messageRes!!
                     }
                     is DataWrapper.Success -> {
+                        Log.d("$MODULE_TAG/$TAG","getSettings success")
                         SettingsList.value = response.data.settings_data
                         DrawingTypesList.value = response.data.drawing_types
                         TypesCountList.value = response.data.types_count
@@ -109,7 +123,7 @@ class SettingsViewModel @Inject constructor(
             }
             catch (e : Exception)
             {
-
+                Log.e("$MODULE_TAG/$TAG",e.message.toString())
             }
             finally {
                 isLoading.value = false

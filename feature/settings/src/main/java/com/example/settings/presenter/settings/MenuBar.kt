@@ -86,6 +86,7 @@ fun MenuBar(
             IconButton(
                 onClick = {
                     viewModel.setSettings()
+                    navController.popBackStack()
                 },
                 modifier = Modifier
                     .background(Color(MaterialTheme.colorScheme.background.toArgb()))

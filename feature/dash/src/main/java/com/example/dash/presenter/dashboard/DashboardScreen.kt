@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -38,12 +39,11 @@ fun DashboardScreen(
     navController: NavController,
     viewModelFactory: ViewModelProvider.Factory
 ){
-
     val viewModel: DashViewModel = viewModel(factory = viewModelFactory)
     val error = viewModel.error.collectAsState()
     val launched = remember {mutableStateOf(true)}
 
-    if(launched.value){
+    if(launched.value && viewModel.NumberData.collectAsState().value.num_numbs == 0 && viewModel.GraphicData.collectAsState().value.num_graphs == 0 ){
 
         if(!viewModel.tokenExists()){
             navController.popBackStack()
@@ -94,9 +94,11 @@ fun GreetingPreview() {
     ) {
         Column {
             InfoBar(
+                login = "rest",
                 navController = NavController(
                     context = LocalContext.current
-                )
+                ),
+
             )
             Row(
                 horizontalArrangement = Arrangement.Center,

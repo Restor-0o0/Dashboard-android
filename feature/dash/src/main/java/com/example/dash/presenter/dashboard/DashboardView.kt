@@ -3,6 +3,7 @@ package com.example.dash.presenter.dashboard
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,6 +18,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,17 +39,35 @@ fun DashboardView(
     viewModel: DashViewModel
 ){
     val login = viewModel.Login.collectAsState()
-    val state = rememberScrollState()
     val isLoading = viewModel.isLoading.collectAsState()
     val NumberData = viewModel.NumberData.collectAsState()
     val GraphicData = viewModel.GraphicData.collectAsState()
     val httpErrorRes = viewModel.httpErrorRes.collectAsState()
     val httpError = if(httpErrorRes.value != null)LocalContext.current.getString(httpErrorRes.value!!) else ""
-Column(
+    var state = rememberScrollState()
+    var scrollToRefresh = remember{ mutableStateOf(false) }
+
+
+    if(scrollToRefresh.value && state.isScrollInProgress == true && state.value == 0){
+        scrollToRefresh.value = false
+        viewModel.getData()
+    }
+    if(isLoading.value == false && state.isScrollInProgress == false && state.value == 0){
+        scrollToRefresh.value = true
+    }
+    else{
+        scrollToRefresh.value = false
+    }
+
+
+
+
+    Column(
     modifier = Modifier
         .background(Color(MaterialTheme.colorScheme.background.toArgb()))
         .fillMaxSize()
 ) {
+
     InfoBar(
         login = login.value,
         navController= navController,
@@ -59,26 +80,40 @@ Column(
             .verticalScroll(state)
             .background(Color(MaterialTheme.colorScheme.background.toArgb()))
             .fillMaxSize()
+            .weight(1f)
 
 
     ) {
         if (isLoading.value) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
+            Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxSize()
+                    .weight(1f)
 
             ) {
-                CircularProgressIndicator(color = Color.White)
+                CircularProgressIndicator(
+
+                    color = Color.White,
+                    modifier = Modifier,
+
+                )
             }
         }
         else if(NumberData.value.num_numbs == 0 && GraphicData.value.num_graphs == 0){
-            Text(
-                text = httpError,
-                fontSize = 25.sp,
-                color = Color(MaterialTheme.colorScheme.surface.toArgb())
-            )
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+
+            ) {
+                Text(
+                    text = httpError,
+                    fontSize = 25.sp,
+                    color = Color(MaterialTheme.colorScheme.surface.toArgb())
+                )
+            }
         }
         else if(NumberData.value.num_numbs > 0 || GraphicData.value.num_graphs > 0){
             Column(
